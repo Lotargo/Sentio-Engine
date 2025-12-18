@@ -1,0 +1,61 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="200" fill="#ffffff"/>
+
+  <!-- Definitions for gradients and masks -->
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#007bff;stop-opacity:0" />
+      <stop offset="20%" style="stop-color:#007bff;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#007bff;stop-opacity:1" />
+      <stop offset="80%" style="stop-color:#007bff;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#007bff;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Animated Wave 1 -->
+  <path fill="none" stroke="url(#blueGradient)" stroke-width="2" opacity="0.6">
+    <animate attributeName="d"
+             dur="6s"
+             repeatCount="indefinite"
+             values="
+               M0,100 C200,80 600,120 800,100;
+               M0,100 C200,120 600,80 800,100;
+               M0,100 C200,80 600,120 800,100
+             "/>
+  </path>
+
+  <!-- Animated Wave 2 (Phase shifted) -->
+  <path fill="none" stroke="url(#blueGradient)" stroke-width="3" opacity="0.8">
+    <animate attributeName="d"
+             dur="8s"
+             repeatCount="indefinite"
+             values="
+               M0,100 C300,130 500,70 800,100;
+               M0,100 C300,70 500,130 800,100;
+               M0,100 C300,130 500,70 800,100
+             "/>
+  </path>
+
+  <!-- Main Text -->
+  <text x="400" y="90"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="48"
+        font-weight="bold"
+        fill="#222222"
+        text-anchor="middle"
+        letter-spacing="4">
+    SENTIO ENGINE
+  </text>
+
+  <!-- Subtitle -->
+  <text x="400" y="130"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="16"
+        font-weight="normal"
+        fill="#666666"
+        text-anchor="middle"
+        letter-spacing="2">
+    EMOTIONAL INTELLIGENCE CORE
+  </text>
+</svg>
