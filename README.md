@@ -1,17 +1,20 @@
 <div align="center">
-  <img src="docs/assets/sentio_logo.svg" alt="Animated Sentio Engine Logo" width="200"/>
+  <img src="docs/assets/sentio_logo.svg" alt="Animated Sentio Engine Logo" width="800"/>
   <h1>Sentio Engine</h1>
   <p>A Self-Sufficient Emotional Engine for Advanced AI</p>
+
+  ---
+  > **Note:** This project is a prototype/sample and is currently under development (temporarily frozen). It has not been fully tested for production use.
+  ---
+
   <p>
-    <img src="https://img.shields.io/badge/Project%20Status-Active-brightgreen" alt="Project Status: Active"/>
-    <img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache 2.0"/>
+    <img src="https://img.shields.io/badge/Project%20Status-Prototype-orange" alt="Project Status: Prototype"/>
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"/>
     <img src="https://img.shields.io/badge/Python-3.12+-3776AB.svg?logo=python&logoColor=white" alt="Python Version"/>
     <img src="https://img.shields.io/badge/Framework-FastAPI-009688.svg?logo=fastapi" alt="Framework: FastAPI"/>
     <img src="https://img.shields.io/badge/API-Protobuf-blue" alt="API: Protobuf"/>
   </p>
 </div>
-
-[Читать на русском](README.ru.md)
 
 ---
 
@@ -48,9 +51,27 @@ While many AI systems can process language, few can grasp its emotional context.
 
 The engine operates as a decoupled microservice, separating emotional processing from the main logic of your AI application.
 
-<div align="center">
-  <img src="docs/assets/sentio_architecture_diagram_ru.svg" alt="Animated Architecture Diagram" width="900"/>
-</div>
+```mermaid
+graph LR
+    subgraph External Systems
+        direction LR
+        A[LLM Parser] -- Protobuf --> B{Sentio Engine API};
+        B -- Protobuf --> C[LLM Generator];
+    end
+
+    subgraph Sentio Engine Service
+        direction TB
+        B -- HTTP Request --> D[FastAPI Server];
+        D -- Calls --> E[Core Engine];
+        E -- Reads --> F["Personality Configs (.json)"];
+        E -- "Reads/Writes" --> G[(MongoDB Database)];
+    end
+
+    style A fill:#cce5ff,stroke:#333
+    style C fill:#cce5ff,stroke:#333
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#ccffcc,stroke:#333
+```
 
 1.  **LLM Parser:** An external component analyzes user input and translates it into a `Stimulus` message.
 2.  **Sentio Engine API:** Receives the `Stimulus`, passes it to the Core Engine, and stores emotional changes in the database.
