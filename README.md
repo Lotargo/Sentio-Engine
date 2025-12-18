@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/sentio_logo.svg" alt="Animated Sentio Engine Logo" width="800"/>
+  <img src="docs/assets/sentio_banner.svg" alt="Sentio Engine Banner" width="800"/>
   <h1>Sentio Engine</h1>
   <p>A Self-Sufficient Emotional Engine for Advanced AI</p>
 
