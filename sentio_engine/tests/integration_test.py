@@ -26,7 +26,7 @@ def clear_redis_cache():
         return True
     except redis.exceptions.ConnectionError as e:
         print(f"!!! Could not connect to Redis: {e}")
-        print("!!! Please ensure the Docker services are running (`docker compose up`)")
+        print("!!! Please ensure Redis is running locally.")
         return False
 
 def test_caching_logic():
@@ -48,7 +48,7 @@ def test_caching_logic():
         response_miss.raise_for_status()
     except requests.RequestException as e:
         print(f"!!! First request failed: {e}")
-        print("!!! Please ensure the Docker services are running (`docker compose up`)")
+        print("!!! Please ensure the Sentio Engine service is running.")
         return False
 
     end_time_miss = time.time()
