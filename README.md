@@ -25,7 +25,6 @@
 - [Real-World Use Cases](#real-world-use-cases)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Kubernetes Deployment](#kubernetes-deployment)
 - [Roadmap](#roadmap)
 - [Full Documentation](#full-documentation)
 
@@ -44,7 +43,6 @@ While many AI systems can process language, few can grasp its emotional context.
 - **Protobuf API:** Uses a high-performance, language-agnostic Protocol Buffers API for communication (`POST /stimulus`, `GET /report`).
 - **Configurable Personality:** Define the AI's emotional palette, baseline moods, and decay rates in simple `.json` files.
 - **Long-Term Memory:** Logs significant emotional events to a MongoDB database, creating a history of the AI's "life experiences."
-- **Dockerized & Ready to Deploy:** Comes with a `docker-compose.yml` file to instantly launch the application and its dependencies (MongoDB).
 - **Modern Python Stack:** Built with Poetry, FastAPI, and Motor, following modern development best practices.
 
 ## Architecture
@@ -101,51 +99,20 @@ A game character's disposition towards the player can evolve based on in-game ev
 
 ## Installation
 
-### With Docker (Recommended)
-1.  **Clone the repository.**
-2.  **Build and run the services:**
-    ```bash
-    docker compose up --build -d
-    ```
-    This command will start both the Sentio Engine application and the MongoDB database.
-
-### For Local Development
 1.  **Install Poetry.** (See [official documentation](https://python-poetry.org/docs/#installation)).
 2.  **Navigate to the project directory:** `cd sentio_engine`
 3.  **Install dependencies:** `poetry install`
+4.  **Install and Run MongoDB:** Ensure you have a running MongoDB instance locally or remote connection URI.
 
 ## Usage
 
 ### Running the Service
-*   **With Docker:** The service will be available at `http://localhost:8000` after running `docker compose up`.
-*   **Locally:** Run `poetry run uvicorn sentio_engine.api.main:app --reload` from within the `sentio_engine` directory.
+Run `poetry run uvicorn sentio_engine.api.main:app --reload` from within the `sentio_engine` directory.
 
 ### Running Tests
 1.  Navigate to the `sentio_engine` directory.
 2.  Run `poetry run pytest`.
 
-## Kubernetes Deployment
-
-Basic manifests for deploying the application to a Kubernetes cluster are provided in the `/k8s` directory.
-
-**Prerequisites:**
-*   A running Kubernetes cluster.
-*   `kubectl` configured to connect to your cluster.
-*   A Docker image of the application pushed to a container registry.
-
-**Steps:**
-
-1.  **Update the Image Path:** In `k8s/deployment.yaml`, change the `image` field from `your-docker-registry/sentio-engine:latest` to the actual path of your published Docker image.
-
-2.  **Apply the Manifests:**
-    ```bash
-    kubectl apply -f k8s/deployment.yaml
-    kubectl apply -f k8s/service.yaml
-    ```
-
-This will create a `Deployment` running the application and a `Service` to expose it within the cluster at `http://sentio-engine-service`.
-
-**Note:** The provided configuration uses an ephemeral SQLite database. For production use, you should configure a persistent storage solution or an external database.
 
 ## Roadmap
 

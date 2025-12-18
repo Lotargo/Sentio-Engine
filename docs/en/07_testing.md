@@ -37,31 +37,24 @@ To run them, execute the following from the `sentio_engine` directory:
 poetry run pytest
 ```
 
-## 3. Integration Test (with Docker)
+## 3. Integration Test
 
-This test verifies the interaction between `sentio-engine` and Redis.
+This test verifies the full application flow, including database interaction.
 
 ### 3.1. Start Services
 
-From the project's root directory, run:
-```bash
-docker compose up --build -d
-```
-This command will start both the application and Redis.
+Ensure that:
+1.  **MongoDB** is running locally (default: `localhost:27017`).
+2.  **Sentio Engine** is running:
+    ```bash
+    poetry run uvicorn sentio_engine.api.main:app --host 0.0.0.0 --port 8000
+    ```
 
 ### 3.2. Run the Test Script
 
-After the services are running, execute the following from the `sentio_engine` directory:
+Execute the following from the `sentio_engine` directory:
 ```bash
 poetry run python tests/integration_test.py
-```
-The script checks that caching is working by comparing the response time of the first (cache miss) and second (cache hit) requests.
-
-### 3.3. Stop Services
-
-After the test is complete, stop the containers:
-```bash
-docker compose down
 ```
 
 ---
