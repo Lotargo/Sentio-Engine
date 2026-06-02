@@ -1,0 +1,4 @@
+{
+  "name": "prefer_dict_get_over_bracket_access_for_optional_keys",
+  "description": "When accessing optional keys in a dictionary, use .get() instead of bracket access to avoid KeyError."
+}

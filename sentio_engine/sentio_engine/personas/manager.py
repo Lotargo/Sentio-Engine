@@ -47,7 +47,7 @@ class PersonaManager:
         self._cache[persona_name] = persona_data
         return persona_data
 
-    def build_system_prompt(self, emotional_state: dict) -> str:
+    def build_system_prompt(self, emotional_state: dict) -> tuple[str, str]:
         """
         Constructs the final system prompt by running the python manifest logic.
         """
