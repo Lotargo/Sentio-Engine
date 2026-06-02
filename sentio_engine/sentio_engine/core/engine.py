@@ -7,7 +7,7 @@ from typing import List, Optional, Callable, Dict
 from sentio_engine.schemas.sentio_pb2 import EmotionalState, Stimulus, Report
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+
 logger = logging.getLogger(__name__)
 
 class SentioEngine:
@@ -59,7 +59,7 @@ class SentioEngine:
         Applies time-based decay to emotions.
         Returns the new 'last_update_timestamp'.
         """
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(datetime.timezone.utc)
 
         # If last_update_time is None (new state), just return now
         if last_update_time is None:
@@ -172,10 +172,9 @@ class SentioEngine:
     def get_report(self, state: EmotionalState, last_update_time: datetime.datetime, complex_states: Optional[List[str]] = None) -> Report:
         """Generates a report from the given state. Optionally includes externally calculated complex states."""
         # Sync decay first to make sure report is up to date
-        self._synchronize_decay(state, last_update_time)
-
         report = Report()
         report.emotional_state.CopyFrom(state)
+        self._synchronize_decay(report.emotional_state, last_update_time)
 
         if complex_states:
              report.complex_states.extend(complex_states)

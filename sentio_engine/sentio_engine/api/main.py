@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Response, Depends, HTTPException, Header, 
 from pathlib import Path
 import hashlib
 import datetime
+from datetime import timezone
 import logging
 from typing import Annotated, Optional
 
@@ -56,7 +57,7 @@ async def verify_api_key(
 
 # --- Helper Functions ---
 
-async def _check_and_update_complex_states(api_key: str, session_id: str) -> list[str]:
+async def _check_and_update_complex_states(api_key: str, session_id: str, engine_instance) -> list[str]:
     """
     Checks for active complex states (feelings) based on history.
     This is a simplified implementation. In a real scenario, we would iterate
@@ -72,7 +73,7 @@ async def _check_and_update_complex_states(api_key: str, session_id: str) -> lis
     if not hasattr(engine, 'feelings_definitions'):
         return []
 
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(timezone.utc)
 
     for feeling_name, definition in engine.feelings_definitions.items():
          # Simplified logic: If "sadness" is a condition, check average sadness
@@ -129,7 +130,7 @@ async def register_client(request: RegisterClientRequest):
 @app.post("/stimulus", status_code=204, summary="Apply stimulus to engine")
 async def apply_stimulus(
     request: Request,
-    x_session_id: Annotated[str, Header()],
+    x_session_id: Annotated[str, Header(alias="x-session-id")] = None,
     api_key: str = Depends(verify_api_key)
 ):
     """
@@ -173,7 +174,7 @@ async def apply_stimulus(
 
 @app.get("/report", response_class=Response, summary="Get current state report")
 async def get_engine_report(
-    x_session_id: Annotated[str, Header()],
+    x_session_id: Annotated[str, Header(alias="x-session-id")] = None,
     api_key: str = Depends(verify_api_key)
 ):
     # 1. Load State
@@ -188,7 +189,7 @@ async def get_engine_report(
         emotional_state = engine.create_initial_state()
 
     # 2. Check Complex States (Hybrid Memory Analysis)
-    active_complex_states = await _check_and_update_complex_states(api_key, x_session_id)
+    active_complex_states = await _check_and_update_complex_states(api_key, x_session_id, engine)
 
     # 3. Generate Report (syncs decay)
     report = engine.get_report(
@@ -198,7 +199,7 @@ async def get_engine_report(
     )
 
     # 4. Save State (because decay might have updated it)
-    new_timestamp = datetime.datetime.utcnow()
+    new_timestamp = datetime.datetime.now(timezone.utc)
 
     await StateRepository.save_state(
         api_key=api_key,
